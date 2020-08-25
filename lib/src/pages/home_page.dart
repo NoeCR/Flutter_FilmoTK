@@ -9,10 +9,12 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Inicializamos el listado de films populares
+    filmService.getPopulars();
     return Scaffold(
         appBar: AppBar(
           centerTitle: false,
-          title: Text('Billboard'),
+          title: Text('Peliculas'),
           backgroundColor: Colors.indigoAccent[100],
           actions: <Widget>[
             IconButton(icon: Icon(Icons.search), onPressed: () {})
@@ -54,14 +56,26 @@ class HomePage extends StatelessWidget {
           SizedBox(
             height: 5.0,
           ),
-          FutureBuilder(
-            future: filmService.getPopulars('1'),
-            // initialData: [],
+          StreamBuilder(
+            stream: filmService.popularsStream,
             builder: (BuildContext context, AsyncSnapshot<List> snapshot) =>
                 snapshot.hasData
-                    ? MovieHorizontal(films: snapshot.data)
+                    ? MovieHorizontal(
+                        films: snapshot.data,
+                        nextPage: filmService.getPopulars,
+                      )
                     : CircularProgressIndicator(),
           ),
+
+          // El future solo se ejecuta una vez
+          // FutureBuilder(
+          //   future: filmService.getPopulars(),
+          //   // initialData: [],
+          //   builder: (BuildContext context, AsyncSnapshot<List> snapshot) =>
+          //       snapshot.hasData
+          //           ? MovieHorizontal(films: snapshot.data)
+          //           : CircularProgressIndicator(),
+          // ),
         ],
       ),
     );
