@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:filmotk/src/models/actors_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:filmotk/src/models/film_model.dart';
 
@@ -59,5 +60,20 @@ class FilmService {
 
     _loading = false;
     return resp;
+  }
+
+  Future<List<Actor>> getCast(String filmId) async {
+    // Monta la URL de la petición
+    final url = Uri.https(_url, '3/movie/$filmId/credits',
+        {'api_key': _apiKey, 'language': _language});
+    // Realiza la petición HTTP al servicio
+    final response = await http.get(url);
+    // Convierte los datos en formato JSON
+    final decodedData = json.decode(response.body);
+    // Contruye la clase Cast la cual tiene una propiedad actors que almacena
+    // los datos de los actores convertidos en instancias de la clase Actor
+    final parsedActors = Cast.fromJsonList(decodedData['cast']);
+    // Devuelve la lista de actores
+    return parsedActors.actors;
   }
 }

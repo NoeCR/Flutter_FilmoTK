@@ -1,5 +1,6 @@
-import 'package:filmotk/src/widgets/movie_horizontal.dart';
 import 'package:flutter/material.dart';
+import 'package:filmotk/src/helpers/search_delegate.dart';
+import 'package:filmotk/src/widgets/movie_horizontal.dart';
 import 'package:filmotk/src/services/film_service.dart';
 import 'package:filmotk/src/widgets/card_swiper_widget.dart';
 
@@ -17,7 +18,15 @@ class HomePage extends StatelessWidget {
           title: Text('Peliculas'),
           backgroundColor: Colors.indigoAccent[100],
           actions: <Widget>[
-            IconButton(icon: Icon(Icons.search), onPressed: () {})
+            IconButton(
+                icon: Icon(Icons.search),
+                onPressed: () {
+                  showSearch(
+                    context: context,
+                    delegate: DataSearch(),
+                    // query: ''
+                  );
+                })
           ],
         ),
         body: Container(
