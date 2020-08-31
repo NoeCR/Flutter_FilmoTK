@@ -76,4 +76,11 @@ class FilmService {
     // Devuelve la lista de actores
     return parsedActors.actors;
   }
+
+  Future<List<Film>> findFilm(String query) async {
+    final url = Uri.https(_url, '3/search/movie',
+        {'api_key': _apiKey, 'language': _language, 'query': query});
+
+    return await _processResponse(url);
+  }
 }
